@@ -39,8 +39,8 @@ public class RainFlake extends BaseFlake {
     private double sinAngle;
     private double cosAngle;
 
-    private float minX;
-    private float maxX;
+    private double minX;
+    private double maxX;
 
     public RainFlake() {
     }
@@ -49,26 +49,26 @@ public class RainFlake extends BaseFlake {
     public void initData(int width, int height) {
         Random random = new Random();
         lineLength = 10 + random.nextInt(20);
-        angle = 90;
+        angle = 135;
         double radian = angle * Math.PI / 180;
         lineColor = Color.argb(0 + random.nextInt(120), 255, 255, 255);
         lineWidth = 1 + random.nextInt(4);
         maxWidth = width;
         maxHeight = height;
-        speed = random.nextInt(2) + 2;
+        speed = random.nextInt(2) + 6;
         double beyond = 0;
 
 
         if (angle <= 90) {
             beyond = height / Math.tan(radian);
-            minX = (float) -beyond;
+            minX = -beyond;
             maxX = width;
         } else {
             beyond = height / Math.tan((180 - angle) * Math.PI / 180);
             minX = 0;
-            maxX = (float) (width + beyond);
+            maxX = (width + beyond);
         }
-        initialX = currentX = (minX + random.nextFloat() * (maxX - minX));
+        initialX = currentX = (float) (minX + random.nextFloat() * (maxX - minX));
         initialY = currentY = random.nextInt(50);
         sinAngle = Math.sin(radian);
         cosAngle = Math.cos(radian);
