@@ -2,6 +2,8 @@ package com.houtrry.weatherviewlibrary;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,6 +18,7 @@ public class RainView extends SurfaceView implements SurfaceHolder.Callback, Run
     private SurfaceHolder mSurfaceHolder;
     private Canvas mCanvas;
     private boolean isDrawing;
+    private Paint mPaint;
 
     public RainView(Context context) {
         this(context, null);
@@ -33,7 +36,7 @@ public class RainView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void init(Context context, AttributeSet attrs) {
         mSurfaceHolder = getHolder();
         mSurfaceHolder.addCallback(this);
-
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
@@ -99,6 +102,12 @@ public class RainView extends SurfaceView implements SurfaceHolder.Callback, Run
         private float angle;
 
         private int lineColor;
+        private int alpha;
 
+        public void draw(@NonNull Canvas canvas, @NonNull Paint paint) {
+            paint.setColor(lineColor);
+            paint.setAlpha(alpha);
+            paint.setStrokeWidth(lineWith);
+        }
     }
 }
