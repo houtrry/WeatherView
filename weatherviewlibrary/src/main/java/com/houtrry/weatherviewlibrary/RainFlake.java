@@ -1,11 +1,11 @@
 package com.houtrry.weatherviewlibrary;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 
 import java.util.Random;
 
@@ -20,58 +20,49 @@ public class RainFlake extends BaseFlake {
 
     private static final String TAG = RainFlake.class.getSimpleName();
 
-    private int lineWidth;
-    private int lineLength;
-    private int lineColor;
-    private float angle;
+    private int mLineWidth;
+    private int mLineLength;
+    private int mLineColor;
 
-    private float currentX;
-    private float currentY;
+    private float mMaxHeight;
+    private float mMaxWidth;
 
-    private float initialX;
-    private float initialY;
+    private double mSinAngle;
+    private double mCosAngle;
 
-    private float speed;
-
-    private float maxHeight;
-    private float maxWidth;
-
-    private double sinAngle;
-    private double cosAngle;
-
-    private double minX;
-    private double maxX;
+    private double mMinX;
+    private double mMaxX;
 
     public RainFlake() {
     }
 
     @Override
-    public void initData(int width, int height) {
+    public void initData(@NonNull Context context, int width, int height) {
         Random random = new Random();
-        lineLength = 10 + random.nextInt(20);
-        angle = 135;
-        double radian = angle * Math.PI / 180;
-        lineColor = Color.argb(0 + random.nextInt(120), 255, 255, 255);
-        lineWidth = 1 + random.nextInt(4);
-        maxWidth = width;
-        maxHeight = height;
-        speed = random.nextInt(2) + 6;
+        mLineLength = 10 + random.nextInt(20);
+        mAngle = 135;
+        double radian = mAngle * Math.PI / 180;
+        mLineColor = Color.argb(0 + random.nextInt(120), 255, 255, 255);
+        mLineWidth = 1 + random.nextInt(4);
+        mMaxWidth = width;
+        mMaxHeight = height;
+        mSpeed = random.nextInt(2) + 6;
         double beyond = 0;
 
 
-        if (angle <= 90) {
+        if (mAngle <= 90) {
             beyond = height / Math.tan(radian);
-            minX = -beyond;
-            maxX = width;
+            mMinX = -beyond;
+            mMaxX = width;
         } else {
-            beyond = height / Math.tan((180 - angle) * Math.PI / 180);
-            minX = 0;
-            maxX = (width + beyond);
+            beyond = height / Math.tan((180 - mAngle) * Math.PI / 180);
+            mMinX = 0;
+            mMaxX = (width + beyond);
         }
-        initialX = currentX = (float) (minX + random.nextFloat() * (maxX - minX));
-        initialY = currentY = random.nextInt(50);
-        sinAngle = Math.sin(radian);
-        cosAngle = Math.cos(radian);
+        mInitialX = mCurrentX = (float) (mMinX + random.nextFloat() * (mMaxX - mMinX));
+        mInitialY = mCurrentY = random.nextInt(50);
+        mSinAngle = Math.sin(radian);
+        mCosAngle = Math.cos(radian);
     }
 
     @Override
@@ -82,15 +73,15 @@ public class RainFlake extends BaseFlake {
 
     @Override
     public void draw(@NonNull Canvas canvas, @NonNull Paint paint, int count) {
-        paint.setStrokeWidth(lineWidth);
-        paint.setColor(lineColor);
+        paint.setStrokeWidth(mLineWidth);
+        paint.setColor(mLineColor);
 
         calculate();
         canvas.drawLine(startX, startY, stopX, stopY, paint);
 
         Log.d(TAG, "===>>>" + hashCode() + ", startX: " + startX + ", startY: " + startY
-                + ", stopX: " + stopX + ", stopY: " + stopY + ", initialX: " + initialX + ", initialY: " + initialY
-                + ", cos: " + cosAngle + ", sin: " + sinAngle);
+                + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY
+                + ", cos: " + mCosAngle + ", sin: " + mSinAngle);
     }
 
 
@@ -100,24 +91,24 @@ public class RainFlake extends BaseFlake {
     private float stopY;
 
     private void calculate() {
-        if (currentY > maxHeight) {
+        if (mCurrentY > mMaxHeight) {
             //超出边界, 从初始点开始重新计算
 
 
             Log.d(TAG, "===>>>init, " + hashCode() + ", startX: " + startX + ", startY: " + startY
-                    + ", stopX: " + stopX + ", stopY: " + stopY + ", initialX: " + initialX + ", initialY: " + initialY
-                    + ", cos: " + cosAngle + ", sin: " + sinAngle);
+                    + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY
+                    + ", cos: " + mCosAngle + ", sin: " + mSinAngle);
 
-            currentX = initialX;
-            currentY = initialY;
+            mCurrentX = mInitialX;
+            mCurrentY = mInitialY;
         }
 
-        startX = (float) (currentX + speed * cosAngle);
-        startY = (float) (currentY + speed * sinAngle);
-        stopX = (float) (startX + lineLength * cosAngle);
-        stopY = (float) (startY + lineLength * sinAngle);
+        startX = (float) (mCurrentX + mSpeed * mCosAngle);
+        startY = (float) (mCurrentY + mSpeed * mSinAngle);
+        stopX = (float) (startX + mLineLength * mCosAngle);
+        stopY = (float) (startY + mLineLength * mSinAngle);
 
-        currentX = stopX;
-        currentY = stopY;
+        mCurrentX = stopX;
+        mCurrentY = stopY;
     }
 }
