@@ -8,8 +8,7 @@ import android.util.Pair;
  * @desc: ${TODO}
  */
 public interface VelocityModelInterface<T> {
-    void init();
-    <E> Pair<E, E> calculateMinAndMax(T width, T height);
+    <E> Pair<E, E> calculateMinAndMax(int width, int height);
 
-    Pair<T, T> calculateNext(T latestX, T latestY);
+    Pair<T, T> calculateNext(T latestX, T latestY, T distance);
 }

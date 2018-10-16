@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.Random;
 
@@ -25,44 +26,51 @@ public class RainFlake extends BaseFlake {
     private int mLineColor;
 
     private float mMaxHeight;
-    private float mMaxWidth;
 
-    private double mSinAngle;
-    private double mCosAngle;
+    private LineVelocityModel mLineVelocityModel;
 
-    private double mMinX;
-    private double mMaxX;
+    private int mMinRainLength = 10;
+    private int mMaxRainLength = 20;
+    private int mMinLineColorAlpha = 0;
+    private int mMaxLineColorAlpha = 120;
+    private int mMinLineWidth = 1;
+    private int mMaxLineWidth = 5;
+    private int mMinSpeed = 2;
+    private int mMaxSpeed = 8;
+    private int mMinY = 0;
+    private int mMaxY = 50;
 
     public RainFlake() {
+    }
+
+    public RainFlake(int minRainLength, int maxRainLength, int minLineColorAlpha, int maxLineColorAlpha, int minLineWidth, int maxLineWidth, int minSpeed, int maxSpeed, int minY, int maxY) {
+        mMinRainLength = minRainLength;
+        mMaxRainLength = maxRainLength;
+        mMinLineColorAlpha = minLineColorAlpha;
+        mMaxLineColorAlpha = maxLineColorAlpha;
+        mMinLineWidth = minLineWidth;
+        mMaxLineWidth = maxLineWidth;
+        mMinSpeed = minSpeed;
+        mMaxSpeed = maxSpeed;
+        mMinY = minY;
+        mMaxY = maxY;
     }
 
     @Override
     public void initData(@NonNull Context context, int width, int height) {
         Random random = new Random();
-        mLineLength = 10 + random.nextInt(20);
-        mAngle = 135;
-        double radian = mAngle * Math.PI / 180;
-        mLineColor = Color.argb(0 + random.nextInt(120), 255, 255, 255);
-        mLineWidth = 1 + random.nextInt(4);
-        mMaxWidth = width;
+        mLineLength = mMinRainLength + random.nextInt(mMaxRainLength - mMinRainLength);
+        mAngle = 90;
+
+        mLineVelocityModel = new LineVelocityModel(mAngle);
+        mLineColor = Color.argb(mMinLineColorAlpha + random.nextInt(mMaxLineColorAlpha - mMinLineColorAlpha), Color.red(mLineColor), Color.green(mLineColor), Color.blue(mLineColor));
+        mLineWidth = mMinLineWidth + random.nextInt(mMaxLineWidth - mMinLineWidth);
         mMaxHeight = height;
-        mSpeed = random.nextInt(2) + 6;
-        double beyond = 0;
+        mSpeed = mMinSpeed + random.nextInt(mMaxSpeed - mMinSpeed);
 
-
-        if (mAngle <= 90) {
-            beyond = height / Math.tan(radian);
-            mMinX = -beyond;
-            mMaxX = width;
-        } else {
-            beyond = height / Math.tan((180 - mAngle) * Math.PI / 180);
-            mMinX = 0;
-            mMaxX = (width + beyond);
-        }
-        mInitialX = mCurrentX = (float) (mMinX + random.nextFloat() * (mMaxX - mMinX));
-        mInitialY = mCurrentY = random.nextInt(50);
-        mSinAngle = Math.sin(radian);
-        mCosAngle = Math.cos(radian);
+        Pair<Double, Double> minAndMax = mLineVelocityModel.calculateMinAndMax(width, height);
+        mInitialX = mCurrentX = (float) (minAndMax.first + random.nextFloat() * (minAndMax.second - minAndMax.first));
+        mInitialY = mCurrentY = mMinY + random.nextInt(mMaxY);
     }
 
     @Override
@@ -77,11 +85,11 @@ public class RainFlake extends BaseFlake {
         paint.setColor(mLineColor);
 
         calculate();
+
         canvas.drawLine(startX, startY, stopX, stopY, paint);
 
         Log.d(TAG, "===>>>" + hashCode() + ", startX: " + startX + ", startY: " + startY
-                + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY
-                + ", cos: " + mCosAngle + ", sin: " + mSinAngle);
+                + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY);
     }
 
 
@@ -94,19 +102,19 @@ public class RainFlake extends BaseFlake {
         if (mCurrentY > mMaxHeight) {
             //超出边界, 从初始点开始重新计算
 
-
             Log.d(TAG, "===>>>init, " + hashCode() + ", startX: " + startX + ", startY: " + startY
-                    + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY
-                    + ", cos: " + mCosAngle + ", sin: " + mSinAngle);
+                    + ", stopX: " + stopX + ", stopY: " + stopY + ", mInitialX: " + mInitialX + ", mInitialY: " + mInitialY);
 
             mCurrentX = mInitialX;
             mCurrentY = mInitialY;
         }
 
-        startX = (float) (mCurrentX + mSpeed * mCosAngle);
-        startY = (float) (mCurrentY + mSpeed * mSinAngle);
-        stopX = (float) (startX + mLineLength * mCosAngle);
-        stopY = (float) (startY + mLineLength * mSinAngle);
+        Pair<Float, Float> nextStart = mLineVelocityModel.calculateNext(mCurrentX, mCurrentY, mSpeed);
+        Pair<Float, Float> nextEnd = mLineVelocityModel.calculateNext(mCurrentX, mCurrentY, mSpeed + mLineLength);
+        startX = nextStart.first;
+        startY = nextStart.second;
+        stopX = nextEnd.first;
+        stopY = nextEnd.second;
 
         mCurrentX = stopX;
         mCurrentY = stopY;

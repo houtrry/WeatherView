@@ -53,8 +53,8 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
         super.onWindowFocusChanged(hasWindowFocus);
         if (hasWindowFocus) {
             for (int i = 0; i < 100; i++) {
-//                BaseFlake flake = new RainFlake();
-                BaseFlake flake = new SnowFlake();
+                BaseFlake flake = new RainFlake();
+//                BaseFlake flake = new SnowFlake();
                 flake.initData(getContext(), mWidth, mHeight);
                 flake.initPaint(mPaint);
                 mFlakes.add(flake);

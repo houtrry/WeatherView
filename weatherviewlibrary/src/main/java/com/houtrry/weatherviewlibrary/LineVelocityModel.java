@@ -12,18 +12,16 @@ public class LineVelocityModel implements VelocityModelInterface<Float> {
     private double angle = 90;
     private double sinAngle = 0;
     private double cosAngle = 0;
-    private double speed;
 
-    public LineVelocityModel(double angle, double speed) {
+    public LineVelocityModel(double angle) {
         this.angle = angle;
-        this.speed = speed;
+        init();
     }
 
     private static final int MIN_ANGLE = 0;
     private static final int MAX_ANGLE = 180;
 
-    @Override
-    public void init() {
+    private void init() {
         if (!(angle % 360 > MIN_ANGLE && angle % 360 < MAX_ANGLE)) {
             throw new IllegalArgumentException(String.format("angle must between %1$d ~ %2$d, and current angle is %3$d", MIN_ANGLE, MAX_ANGLE, angle));
         }
@@ -33,7 +31,7 @@ public class LineVelocityModel implements VelocityModelInterface<Float> {
     }
 
     @Override
-    public Pair<Double, Double> calculateMinAndMax(Float width, Float height) {
+    public Pair<Double, Double> calculateMinAndMax(int width, int height) {
         double minX = 0, maxX = 0;
         double radian = angle * Math.PI / 180;
         double beyond = 0;
@@ -50,8 +48,8 @@ public class LineVelocityModel implements VelocityModelInterface<Float> {
     }
 
     @Override
-    public Pair<Float, Float> calculateNext(Float latestX, Float latestY) {
+    public Pair<Float, Float> calculateNext(Float latestX, Float latestY, Float distance) {
 
-        return new Pair<>((float) (latestX + speed * cosAngle), (float) (latestY + speed * sinAngle));
+        return new Pair<>((float) (latestX + distance * cosAngle), (float) (latestY + distance * sinAngle));
     }
 }
