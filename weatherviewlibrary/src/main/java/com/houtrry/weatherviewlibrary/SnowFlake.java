@@ -27,17 +27,17 @@ public class SnowFlake extends BaseFlake {
     private LineVelocityModel mLineVelocityModel;
     private int mMinAlpha = 20;
     private int mMaxAlpha = 220;
-    private int mMinSpeed = 2;
-    private int mMaxSpeed = 8;
-    private int mMinY = 0;
-    private int mMaxY = 50;
+    private float mMinSpeed = 2;
+    private float mMaxSpeed = 8;
+    private float mMinY = 0;
+    private float mMaxY = 50;
     private float mMinScale = 0.4f;
     private float mMaxScale = 1.0f;
 
     public SnowFlake() {
     }
 
-    public SnowFlake(Bitmap snowBitmap, int angle, int minAlpha, int maxAlpha, int minSpeed, int maxSpeed, int minY, int maxY, float minScale, float maxScale) {
+    public SnowFlake(Bitmap snowBitmap, int angle, int minAlpha, int maxAlpha, float minSpeed, float maxSpeed, float minY, float maxY, float minScale, float maxScale) {
         mSnowBitmap = snowBitmap;
         mAngle = angle;
         mMinAlpha = minAlpha;
@@ -54,7 +54,7 @@ public class SnowFlake extends BaseFlake {
     public void initData(@NonNull Context context, int width, int height) {
         mSnowBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_snow);
         Random random = new Random();
-        mSpeed = random.nextInt(mMaxSpeed - mMinSpeed) + mMinSpeed;
+        mSpeed = random.nextFloat() * (mMaxSpeed - mMinSpeed) + mMinSpeed;
 
         mLineVelocityModel = new LineVelocityModel(mAngle);
 

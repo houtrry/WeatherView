@@ -21,29 +21,29 @@ public class RainFlake extends BaseFlake {
 
     private static final String TAG = RainFlake.class.getSimpleName();
 
-    private int mLineWidth;
-    private int mLineLength;
-    private int mLineColor;
+    private float mLineWidth;
+    private float mLineLength;
+    private int mLineColor = Color.WHITE;
 
     private float mMaxHeight;
 
     private LineVelocityModel mLineVelocityModel;
 
-    private int mMinRainLength = 10;
-    private int mMaxRainLength = 20;
+    private float mMinRainLength = 10;
+    private float mMaxRainLength = 20;
     private int mMinLineColorAlpha = 0;
     private int mMaxLineColorAlpha = 120;
-    private int mMinLineWidth = 1;
-    private int mMaxLineWidth = 5;
-    private int mMinSpeed = 2;
-    private int mMaxSpeed = 8;
-    private int mMinY = 0;
-    private int mMaxY = 50;
+    private float mMinLineWidth = 1;
+    private float mMaxLineWidth = 5;
+    private float mMinSpeed = 2;
+    private float mMaxSpeed = 8;
+    private float mMinY = 0;
+    private float mMaxY = 50;
 
     public RainFlake() {
     }
 
-    public RainFlake(int minRainLength, int maxRainLength, int minLineColorAlpha, int maxLineColorAlpha, int minLineWidth, int maxLineWidth, int minSpeed, int maxSpeed, int minY, int maxY) {
+    public RainFlake(float minRainLength, float maxRainLength, int minLineColorAlpha, int maxLineColorAlpha, float minLineWidth, float maxLineWidth, float minSpeed, float maxSpeed, float minY, float maxY, int angle, int lineColor) {
         mMinRainLength = minRainLength;
         mMaxRainLength = maxRainLength;
         mMinLineColorAlpha = minLineColorAlpha;
@@ -54,23 +54,26 @@ public class RainFlake extends BaseFlake {
         mMaxSpeed = maxSpeed;
         mMinY = minY;
         mMaxY = maxY;
+        mAngle = angle;
+        mLineColor = lineColor;
     }
 
     @Override
     public void initData(@NonNull Context context, int width, int height) {
         Random random = new Random();
-        mLineLength = mMinRainLength + random.nextInt(mMaxRainLength - mMinRainLength);
+        mLineLength = mMinRainLength + random.nextFloat() * (mMaxRainLength - mMinRainLength);
         mAngle = 90;
 
         mLineVelocityModel = new LineVelocityModel(mAngle);
-        mLineColor = Color.argb(mMinLineColorAlpha + random.nextInt(mMaxLineColorAlpha - mMinLineColorAlpha), Color.red(mLineColor), Color.green(mLineColor), Color.blue(mLineColor));
-        mLineWidth = mMinLineWidth + random.nextInt(mMaxLineWidth - mMinLineWidth);
+        mLineColor = Color.argb(mMinLineColorAlpha + random.nextInt(mMaxLineColorAlpha - mMinLineColorAlpha),
+                Color.red(mLineColor), Color.green(mLineColor), Color.blue(mLineColor));
+        mLineWidth = mMinLineWidth + random.nextFloat() * (mMaxLineWidth - mMinLineWidth);
         mMaxHeight = height;
-        mSpeed = mMinSpeed + random.nextInt(mMaxSpeed - mMinSpeed);
+        mSpeed = mMinSpeed + random.nextFloat() * (mMaxSpeed - mMinSpeed);
 
         Pair<Double, Double> minAndMax = mLineVelocityModel.calculateMinAndMax(width, height);
         mInitialX = mCurrentX = (float) (minAndMax.first + random.nextFloat() * (minAndMax.second - minAndMax.first));
-        mInitialY = mCurrentY = mMinY + random.nextInt(mMaxY);
+        mInitialY = mCurrentY = mMinY + random.nextFloat() * mMaxY;
     }
 
     @Override

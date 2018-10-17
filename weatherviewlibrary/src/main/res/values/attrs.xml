@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FlakeView">
+        <!--雪花图片资源-->
+        <attr name="snow_bitmap" format="reference"></attr>
+        <!--雪花的最小透明度， 0~255， 但是要小于snow_max_alpha-->
+        <attr name="snow_min_alpha" format="integer"></attr>
+        <!--雪花的最大透明度， 0~255， 但是要大于snow_min_alpha-->
+        <attr name="snow_max_alpha" format="integer"></attr>
+        <!--雪花的最小缩放比， 0.0~1.0， 但是要小于snow_max_scale-->
+        <attr name="snow_min_scale" format="float"></attr>
+        <!--雪花的最大缩放比， 0.0~1.0， 但是要大于snow_min_scale-->
+        <attr name="snow_max_scale" format="float"></attr>
+
+        <!--雨滴或者雪花的最小下落速度-->
+        <attr name="flake_min_speed" format="reference|dimension"></attr>
+        <!--雨滴或者雪花的最大下落速度-->
+        <attr name="flake_max_speed" format="reference|dimension"></attr>
+        <!--雨滴或者雪花 初始位置的y方向最小值-->
+        <attr name="flake_min_y" format="reference|dimension"></attr>
+        <!--雨滴或者雪花 初始位置的y方向最大值-->
+        <attr name="flake_max_y" format="reference|dimension"></attr>
+        <!--雨滴或者雪花的下落角度，0~180（不包含0和180），取x轴正方形为0度，y轴正方向为90度-->
+        <attr name="flake_angle" format="integer"></attr>
+        <!--雨滴或者雪花的总数-->
+        <attr name="flake_count" format="integer"></attr>
+        <!--天气类型，目前只有下雨下雪-->
+        <attr name="weather_type" format="flag">
+            <!--天气类型-下雨-->
+            <flag name="type_rain" value="0"></flag>
+            <!--天气类型-下雪-->
+            <flag name="type_snow" value="1"></flag>
+        </attr>
+
+        <!--雨滴线条的最小长度-->
+        <attr name="rain_min_length" format="reference|dimension"></attr>
+        <!--雨滴线条的最大长度-->
+        <attr name="rain_max_length" format="reference|dimension"></attr>
+        <!--雨滴线条的最小透明度-->
+        <attr name="rain_min_line_color_alpha" format="integer"></attr>
+        <!--雨滴线条的最大透明度-->
+        <attr name="rain_max_line_color_alpha" format="integer"></attr>
+        <!--雨滴线条的最小宽度-->
+        <attr name="rain_min_width" format="reference|dimension"></attr>
+        <!--雨滴线条的最大宽度-->
+        <attr name="rain_max_width" format="reference|dimension"></attr>
+
+    </declare-styleable>
+</resources>
