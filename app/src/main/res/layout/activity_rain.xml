@@ -8,9 +8,33 @@
     tools:context=".RainActivity">
 
     <com.houtrry.weatherviewlibrary.FlakeView
+        android:id="@+id/rain_flake_view"
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
+        app:flake_min_speed="1dp"
+        app:flake_max_speed="3dp"
+        app:flake_min_y="0dp"
+        app:flake_max_y="15dp"
+        app:flake_angle="90"
+        app:flake_count="120"
+        app:weather_type="type_rain"
+
+
+        app:rain_min_length="2dp"
+        app:rain_max_length="6dp"
+        app:rain_min_line_color_alpha="20"
+        app:rain_max_line_color_alpha="120"
+        app:rain_min_width="1dp"
+        app:rain_max_width="3dp"
+
+
+        app:snow_bitmap="@mipmap/ic_snow"
+        app:snow_min_alpha="20"
+        app:snow_max_alpha="220"
+        app:snow_min_scale="0.4"
+        app:snow_max_scale="1.0"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

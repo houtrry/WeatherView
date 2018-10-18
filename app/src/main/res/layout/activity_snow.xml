@@ -7,4 +7,30 @@
     android:layout_height="match_parent"
     tools:context=".SnowActivity">
 
+
+    <com.houtrry.weatherviewlibrary.FlakeView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@color/colorAccent"
+        app:flake_min_speed="1dp"
+        app:flake_max_speed="3dp"
+        app:flake_min_y="0dp"
+        app:flake_max_y="15dp"
+        app:flake_angle="90"
+        app:flake_count="120"
+        app:weather_type="type_snow"
+
+
+        app:snow_bitmap="@mipmap/ic_snow"
+        app:snow_min_alpha="20"
+        app:snow_max_alpha="220"
+        app:snow_min_scale="0.4"
+        app:snow_max_scale="1.0"
+
+
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>

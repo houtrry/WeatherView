@@ -25,11 +25,11 @@
         <!--雨滴或者雪花的总数-->
         <attr name="flake_count" format="integer"></attr>
         <!--天气类型，目前只有下雨下雪-->
-        <attr name="weather_type" format="flag">
+        <attr name="weather_type" format="enum">
             <!--天气类型-下雨-->
-            <flag name="type_rain" value="0"></flag>
+            <enum name="type_rain" value="0"></enum>
             <!--天气类型-下雪-->
-            <flag name="type_snow" value="1"></flag>
+            <enum name="type_snow" value="1"></enum>
         </attr>
 
         <!--雨滴线条的最小长度-->
