@@ -4,8 +4,8 @@ import android.util.Pair;
 
 /**
  * @author: houtrry
- * @time: 2018/10/15
- * @desc: ${TODO}
+ * time: 2018/10/15
+ * desc:直綫型下落模式。雪花或者雨滴按照直綫下落。當然，可以設置下落角度。
  */
 public class LineVelocityModel implements VelocityModelInterface<Float> {
 

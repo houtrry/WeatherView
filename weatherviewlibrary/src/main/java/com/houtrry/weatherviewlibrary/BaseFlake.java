@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 
 /**
  * @author: houtrry
- * @date: 2018/10/11 10:48
+ * date: 2018/10/11 10:48
  * @version: $Rev$
- * @description: ${TODO}
+ * description:雪花/雨滴的基類。
  */
 
 public abstract class BaseFlake {

@@ -12,9 +12,9 @@ import java.util.Random;
 
 /**
  * @author: houtrry
- * @date: 2018/10/11 9:51
+ * date: 2018/10/11 9:51
  * @version: $Rev$
- * @description: ${TODO}
+ * description:雨滴實現類。
  */
 
 public class RainFlake extends BaseFlake {

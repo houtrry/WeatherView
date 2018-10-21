@@ -20,9 +20,9 @@ import java.util.List;
 
 /**
  * @author: houtrry
- * @date: 2018/10/10 15:25
+ * date: 2018/10/10 15:25
  * @version: $Rev$
- * @description: ${TODO}
+ * description: 天氣View。當前只包含下雨和下雪兩種效果。
  */
 
 public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Runnable {

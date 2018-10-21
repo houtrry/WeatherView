@@ -12,8 +12,8 @@ import java.util.Random;
 
 /**
  * @author: houtrry
- * @time: 2018/10/14
- * @desc: ${TODO}
+ * time: 2018/10/14
+ * desc: 雪花實現類。
  */
 public class SnowFlake extends BaseFlake {
 
