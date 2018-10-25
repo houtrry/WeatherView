@@ -28,6 +28,7 @@
         app:rain_min_width="1dp"
         app:rain_max_width="3dp"
 
+        app:auto_play="false"
 
         app:snow_bitmap="@mipmap/ic_snow"
         app:snow_min_alpha="20"

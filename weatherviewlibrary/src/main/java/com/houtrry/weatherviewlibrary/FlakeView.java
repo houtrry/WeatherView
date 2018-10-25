@@ -59,8 +59,14 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public static final int TYPE_RAIN = 0;
     public static final int TYPE_SNOW = 1;
 
-    private @WeatherType int mWeatherType = TYPE_RAIN;
+    public static final int HYETAL_TYPE_LIGHT = 0;
+    public static final int HYETAL_TYPE_MODERATE = 1;
+    public static final int HYETAL_TYPE_HEAVY = 2;
 
+    private @WeatherType
+    int mWeatherType = TYPE_RAIN;
+
+    private boolean mAutoPlay = true;
 
     public FlakeView(Context context) {
         this(context, null);
@@ -75,7 +81,8 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
         init(context, attrs);
     }
 
-    public  @WeatherType int getWeatherType() {
+    public @WeatherType
+    int getWeatherType() {
         return mWeatherType;
     }
 
@@ -97,7 +104,7 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        if (hasWindowFocus) {
+        if (hasWindowFocus && mAutoPlay) {
             refreshFlakeData();
         }
     }
@@ -157,6 +164,7 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
         mAngle = typedArray.getInt(R.styleable.FlakeView_flake_angle, 90);
         mFlakeCount = typedArray.getInt(R.styleable.FlakeView_flake_count, 100);
         mWeatherType = typedArray.getInteger(R.styleable.FlakeView_weather_type, TYPE_RAIN);
+        mAutoPlay = typedArray.getBoolean(R.styleable.FlakeView_auto_play, true);
 
         mMinRainLength = typedArray.getDimension(R.styleable.FlakeView_rain_min_length, 10);
         mMaxRainLength = typedArray.getDimension(R.styleable.FlakeView_rain_max_length, 20);
@@ -203,7 +211,7 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
     private void refreshFlakeData() {
         mFlakes.clear();
         for (int i = 0; i < mFlakeCount; i++) {
-            BaseFlake flake ;
+            BaseFlake flake;
             if (mWeatherType == TYPE_RAIN) {
                 flake = new RainFlake(mMinRainLength, mMaxRainLength, mMinLineColorAlpha, mMaxLineColorAlpha, mMinLineWidth, mMaxLineWidth, mMinSpeed, mMaxSpeed, mMinY, mMaxY, mAngle, mLineBaseColor);
             } else {
@@ -216,12 +224,16 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
     }
 
     private int mFrameCount = 0;
-
+    private List<BaseFlake> mTempFlakes = new ArrayList<>();
 
     private void drawContent(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC);
-        for (BaseFlake flake : mFlakes) {
+        mTempFlakes.clear();
+        if (mFlakes != null && mFlakes.size() > 0) {
+            mTempFlakes.addAll(mFlakes);
+        }
+        for (BaseFlake flake : mTempFlakes) {
             flake.draw(canvas, mPaint, mFrameCount);
         }
         mFrameCount++;
@@ -232,5 +244,4 @@ public class FlakeView extends SurfaceView implements SurfaceHolder.Callback, Ru
     public @interface WeatherType {
 
     }
-
 }
